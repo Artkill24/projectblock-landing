@@ -229,10 +229,10 @@ export default function Home() {
           <h2 style={S.h2}>Pay for what you use.</h2>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:1,background:"rgba(255,255,255,0.07)"}}>
             {[
-              {plan:"FREE",price:"€0",events:"500K events/mo",feat:["Budget gating","Audit log (30 days)","Dashboard embed","Community support"],btn:"Start free",featured:false},
-              {plan:"STARTER",price:"€19",events:"10M events/mo",feat:["Budget gating","Audit log (1 year)","Budget webhooks","Usage analytics","Email support"],btn:"Get started",featured:true},
-              {plan:"PRO",price:"€49",events:"100M events/mo",feat:["Everything in Starter","Audit log (10 years)","EU AI Act reports","API access","Priority support"],btn:"Get started",featured:false},
-              {plan:"BUSINESS",price:"€199",events:"Unlimited",feat:["Everything in Pro","White-label dashboard","Custom retention","SSO / SAML","SLA + dedicated"],btn:"Contact us",featured:false},
+              {plan:"FREE",price:"€0",events:"500K events/mo",feat:["Budget gating","Audit log (30 days)","Dashboard embed","Community support"],btn:"Start free",link:"#free",featured:false},
+              {plan:"STARTER",price:"€19",events:"10M events/mo",feat:["Budget gating","Audit log (1 year)","Budget webhooks","Usage analytics","Email support"],btn:"Get started",link:"https://buy.stripe.com/cNicN42Fr3xB1CI7FGcQU02",featured:true},
+              {plan:"PRO",price:"€49",events:"100M events/mo",feat:["Everything in Starter","Audit log (10 years)","EU AI Act reports","API access","Priority support"],btn:"Get started",link:"https://buy.stripe.com/4gM0017Zlc470yEaRScQU03",featured:false},
+              {plan:"BUSINESS",price:"€199",events:"Unlimited",feat:["Everything in Pro","White-label dashboard","Custom retention","SSO / SAML","SLA + dedicated"],btn:"Contact us",link:"https://buy.stripe.com/9B6eVc3Jvd8b2GM5xycQU04",featured:false},
             ].map(p=>(
               <div key={p.plan} style={{background:p.featured?"#0d0d12":"#060608",padding:"36px 28px",borderTop:p.featured?"2px solid #00e5cc":"2px solid transparent"}}>
                 <div style={{fontSize:11,letterSpacing:"0.15em",textTransform:"uppercase" as const,...S.muted,marginBottom:16}}>{p.plan}</div>
@@ -241,11 +241,9 @@ export default function Home() {
                 <ul style={{listStyle:"none",display:"flex",flexDirection:"column" as const,gap:10,marginBottom:28}}>
                   {p.feat.map(f=><li key={f} style={{fontSize:12,...S.muted,display:"flex",gap:10}}><span style={{color:"#00e5cc",flexShrink:0}}>→</span>{f}</li>)}
                 </ul>
-                <button style={{width:"100%",fontSize:12,fontWeight:700,padding:12,cursor:"pointer",letterSpacing:"0.05em",fontFamily:"monospace",
-                  background:p.featured?"#00e5cc":"transparent",border:p.featured?"none":"1px solid rgba(255,255,255,0.07)",
-                  color:p.featured?"#000":"rgba(232,232,240,0.45)"}}>
+                <a href={p.link} target="_blank" rel="noopener" style={{display:"block",textAlign:"center",textDecoration:"none",width:"100%",fontSize:12,fontWeight:700,padding:"12px",cursor:"pointer",letterSpacing:"0.05em",fontFamily:"monospace",background:p.featured?"#00e5cc":"transparent",border:p.featured?"none":"1px solid rgba(255,255,255,0.07)",color:p.featured?"#000":"rgba(232,232,240,0.45)"}}>
                   {p.btn} →
-                </button>
+                </a>
               </div>
             ))}
           </div>
