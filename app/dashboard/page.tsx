@@ -9,7 +9,6 @@ const S = {
   wrap: {maxWidth:900,margin:"0 auto",padding:"40px 24px"},
   card: {border:"1px solid rgba(255,255,255,0.07)",background:"#0d0d12",padding:"28px",marginBottom:16},
   label: {fontSize:10,letterSpacing:"0.15em",color:"rgba(232,232,240,0.45)",textTransform:"uppercase" as const,marginBottom:8},
-  val: {fontSize:15,fontWeight:700,letterSpacing:"-0.01em"},
   teal: {color:"#00e5cc"},
   grid: {display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:16,marginBottom:24},
   badge: (plan:string) => ({
@@ -23,24 +22,47 @@ const S = {
 
 function DashboardContent() {
   const params = useSearchParams();
+  const token = params.get("token");
+
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [linkSent, setLinkSent] = useState(false);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [verifying, setVerifying] = useState(!!token);
 
-  const lookup = async (e?: React.FormEvent) => {
+  // Se c'è un token nell'URL, verifica automaticamente
+  useEffect(() => {
+    if (!token) return;
+    (async () => {
+      try {
+        const res = await fetch(`${API}/v1/auth/verify?token=${token}`);
+        if (!res.ok) throw new Error("This link is invalid or has expired.");
+        const d = await res.json();
+        setData(d);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setVerifying(false);
+      }
+    })();
+  }, [token]);
+
+  const requestLink = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!email.includes("@")) return;
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API}/v1/org/by-email/${encodeURIComponent(email)}`);
-      if (!res.ok) throw new Error("No account found for this email");
-      const d = await res.json();
-      setData(d);
-    } catch (err: any) {
-      setError(err.message);
+      await fetch(`${API}/v1/auth/request-link`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({email})
+      });
+      setLinkSent(true);
+    } catch {
+      setError("Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }
@@ -53,15 +75,12 @@ function DashboardContent() {
   };
 
   const planLimits: Record<string,string> = {
-    free: "500K events/mo",
-    starter: "10M events/mo",
-    pro: "100M events/mo",
-    business: "Unlimited",
+    free: "500K events/mo", starter: "10M events/mo",
+    pro: "100M events/mo", business: "Unlimited",
   };
 
   return (
     <main style={S.bg}>
-      {/* NAV */}
       <nav style={{borderBottom:"1px solid rgba(255,255,255,0.07)",background:"rgba(6,6,8,0.9)",backdropFilter:"blur(20px)",position:"sticky",top:0,zIndex:100}}>
         <div style={{maxWidth:900,margin:"0 auto",padding:"0 24px",height:56,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <a href="/" style={{display:"flex",alignItems:"center",gap:10,textDecoration:"none",color:"#e8e8f0",fontSize:14,fontWeight:700}}>
@@ -75,37 +94,52 @@ function DashboardContent() {
       </nav>
 
       <div style={S.wrap}>
-        {!data ? (
-          /* LOGIN */
+        {verifying ? (
+          <div style={{textAlign:"center",marginTop:100,color:"rgba(232,232,240,0.45)",fontSize:13}}>
+            Verifying your link...
+          </div>
+        ) : !data ? (
           <div style={{maxWidth:440,margin:"80px auto"}}>
-            <div style={{fontSize:11,letterSpacing:"0.15em",...S.teal,marginBottom:16}}>↳ ACCESS YOUR ACCOUNT</div>
-            <h1 style={{fontSize:32,fontWeight:800,letterSpacing:"-0.03em",marginBottom:8}}>Welcome back.</h1>
-            <p style={{fontSize:12,color:"rgba(232,232,240,0.45)",marginBottom:32,lineHeight:1.7}}>
-              Enter the email you used to subscribe — we&apos;ll show you your API key and usage.
-            </p>
-            <form onSubmit={lookup} style={{display:"flex",flexDirection:"column",gap:12}}>
-              <input
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={e=>setEmail(e.target.value)}
-                style={{fontSize:13,background:"#0d0d12",border:"1px solid rgba(255,255,255,0.07)",
-                  color:"#e8e8f0",padding:"14px 16px",outline:"none",fontFamily:"monospace",width:"100%"}}
-              />
-              {error && <div style={{fontSize:12,color:"#ff4d6d"}}>{error}</div>}
-              <button type="submit" disabled={loading}
-                style={{fontSize:13,fontWeight:700,background:"#00e5cc",color:"#000",border:"none",
-                  cursor:"pointer",padding:"14px",letterSpacing:"0.05em",fontFamily:"monospace",
-                  opacity:loading?0.6:1}}>
-                {loading ? "SEARCHING..." : "ACCESS DASHBOARD →"}
-              </button>
-            </form>
-            <p style={{fontSize:11,color:"rgba(232,232,240,0.3)",marginTop:20,textAlign:"center"}}>
-              No password needed. Just your email.
-            </p>
+            {linkSent ? (
+              <>
+                <div style={{fontSize:11,letterSpacing:"0.15em",...S.teal,marginBottom:16}}>↳ CHECK YOUR INBOX</div>
+                <h1 style={{fontSize:32,fontWeight:800,letterSpacing:"-0.03em",marginBottom:8}}>Link sent.</h1>
+                <p style={{fontSize:12,color:"rgba(232,232,240,0.45)",lineHeight:1.7}}>
+                  If an account exists for <span style={S.teal}>{email}</span>, you&apos;ll receive a login link in the next minute.
+                  The link expires in 15 minutes.
+                </p>
+                <button onClick={()=>{setLinkSent(false);setEmail("");}}
+                  style={{fontSize:11,background:"transparent",color:"rgba(232,232,240,0.3)",
+                    border:"none",cursor:"pointer",marginTop:24,fontFamily:"monospace"}}>
+                  ← Use a different email
+                </button>
+              </>
+            ) : (
+              <>
+                <div style={{fontSize:11,letterSpacing:"0.15em",...S.teal,marginBottom:16}}>↳ ACCESS YOUR ACCOUNT</div>
+                <h1 style={{fontSize:32,fontWeight:800,letterSpacing:"-0.03em",marginBottom:8}}>Welcome back.</h1>
+                <p style={{fontSize:12,color:"rgba(232,232,240,0.45)",marginBottom:32,lineHeight:1.7}}>
+                  Enter your email — we&apos;ll send you a secure login link. No password needed.
+                </p>
+                <form onSubmit={requestLink} style={{display:"flex",flexDirection:"column",gap:12}}>
+                  <input
+                    type="email" placeholder="your@email.com" value={email}
+                    onChange={e=>setEmail(e.target.value)}
+                    style={{fontSize:13,background:"#0d0d12",border:"1px solid rgba(255,255,255,0.07)",
+                      color:"#e8e8f0",padding:"14px 16px",outline:"none",fontFamily:"monospace",width:"100%"}}
+                  />
+                  {error && <div style={{fontSize:12,color:"#ff4d6d"}}>{error}</div>}
+                  <button type="submit" disabled={loading}
+                    style={{fontSize:13,fontWeight:700,background:"#00e5cc",color:"#000",border:"none",
+                      cursor:"pointer",padding:"14px",letterSpacing:"0.05em",fontFamily:"monospace",
+                      opacity:loading?0.6:1}}>
+                    {loading ? "SENDING..." : "SEND LOGIN LINK →"}
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         ) : (
-          /* DASHBOARD */
           <div>
             <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:32,flexWrap:"wrap",gap:12}}>
               <div>
@@ -115,7 +149,6 @@ function DashboardContent() {
               <span style={S.badge(data.plan)}>{data.plan}</span>
             </div>
 
-            {/* STATS */}
             <div style={S.grid}>
               {[
                 {label:"Plan", val: data.plan.toUpperCase()},
@@ -125,12 +158,11 @@ function DashboardContent() {
               ].map(s=>(
                 <div key={s.label} style={S.card}>
                   <div style={S.label}>{s.label}</div>
-                  <div style={{...S.val,...S.teal}}>{s.val}</div>
+                  <div style={{fontSize:15,fontWeight:700,...S.teal}}>{s.val}</div>
                 </div>
               ))}
             </div>
 
-            {/* API KEY */}
             <div style={S.card}>
               <div style={S.label}>Your API Key</div>
               <div style={{display:"flex",alignItems:"center",gap:12,flexWrap:"wrap"}}>
@@ -146,27 +178,20 @@ function DashboardContent() {
                   {copied ? "✓ COPIED" : "COPY"}
                 </button>
               </div>
-              <p style={{fontSize:11,color:"rgba(232,232,240,0.3)",marginTop:12}}>
-                Keep this secret. Use it as Bearer token in your API calls.
-              </p>
             </div>
 
-            {/* QUICKSTART */}
             <div style={S.card}>
               <div style={S.label}>Quickstart</div>
               <pre style={{fontSize:12,lineHeight:1.7,overflowX:"auto",margin:0}}>
                 <span style={{color:"rgba(232,232,240,0.3)"}}>{"# Install\n"}</span>
                 {"pip install projectblock\n\n"}
                 <span style={{color:"rgba(232,232,240,0.3)"}}>{"# Use\n"}</span>
-                <span style={{color:"#c792ea"}}>{"from"}</span>{" "}<span style={{color:"#00e5cc"}}>{"projectblock"}</span>{" import gate, record\n\n"}
-                {"# Set env: PROJECTBLOCK_API_KEY="}<span style={{color:"#00e5cc"}}>{data.api_key.slice(0,12)}{"..."}</span>{"\n\n"}
-                <span style={{color:"rgba(232,232,240,0.3)"}}>{"# Gate + Record\n"}</span>
+                <span style={{color:"#c792ea"}}>{"from"}</span>{" "}<span style={S.teal}>{"projectblock"}</span>{" import gate, record\n\n"}
                 <span style={{color:"#c792ea"}}>{"await"}</span>{" gate("}<span style={{color:"#c3e88d"}}>{"\"user_123\""}</span>{", budget_usd="}<span style={{color:"#f78c6c"}}>{"5.00"}</span>{")\n"}
                 <span style={{color:"#c792ea"}}>{"await"}</span>{" record("}<span style={{color:"#c3e88d"}}>{"\"user_123\""}</span>{", model="}<span style={{color:"#c3e88d"}}>{"\"gpt-4o\""}</span>{", cost="}<span style={{color:"#f78c6c"}}>{"0.003"}</span>{")"}
               </pre>
             </div>
 
-            {/* UPGRADE */}
             {data.plan === "free" && (
               <div style={{...S.card,borderColor:"#00e5cc",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:16}}>
                 <div>
@@ -181,7 +206,7 @@ function DashboardContent() {
               </div>
             )}
 
-            <button onClick={()=>{setData(null);setEmail("");}}
+            <button onClick={()=>{setData(null);setEmail("");window.history.replaceState({},"","/dashboard");}}
               style={{fontSize:11,background:"transparent",color:"rgba(232,232,240,0.3)",
                 border:"none",cursor:"pointer",marginTop:8,fontFamily:"monospace"}}>
               ← Sign out
