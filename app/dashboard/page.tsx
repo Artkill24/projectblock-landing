@@ -210,6 +210,22 @@ function DashboardContent() {
               </pre>
             </div>
 
+            {data.plan !== "free" && (
+              <div style={S.card}>
+                <div style={S.label}>Billing</div>
+                <p style={{fontSize:12,color:"rgba(232,232,240,0.45)",marginBottom:16,lineHeight:1.6}}>
+                  Update your payment method, download invoices, or cancel your subscription.
+                </p>
+                <button onClick={manageBilling} disabled={billingLoading}
+                  style={{fontSize:12,fontWeight:700,background:"transparent",
+                    color:"#00e5cc",border:"1px solid #00e5cc",cursor:"pointer",
+                    padding:"10px 20px",fontFamily:"monospace",letterSpacing:"0.05em",
+                    opacity:billingLoading?0.6:1}}>
+                  {billingLoading ? "OPENING..." : "MANAGE BILLING →"}
+                </button>
+              </div>
+            )}
+
             {data.plan === "free" && (
               <div style={{...S.card,borderColor:"#00e5cc",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:16}}>
                 <div>
