@@ -30,6 +30,24 @@ function DashboardContent() {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [billingLoading, setBillingLoading] = useState(false);
+
+  const manageBilling = async () => {
+    setBillingLoading(true);
+    try {
+      const res = await fetch(`${API}/v1/billing/portal`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${data.api_key}` },
+      });
+      if (!res.ok) throw new Error();
+      const d = await res.json();
+      window.location.href = d.url;
+    } catch {
+      alert("Could not open the billing portal. Please try again in a moment.");
+    } finally {
+      setBillingLoading(false);
+    }
+  };
   const [verifying, setVerifying] = useState(!!token);
 
   // Se c'è un token nell'URL, verifica automaticamente
