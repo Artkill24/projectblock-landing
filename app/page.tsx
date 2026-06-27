@@ -58,7 +58,7 @@ export default function Home() {
             project<span style={{color:"#00e5cc"}}>block</span>
           </div>
           <div style={{display:"flex",gap:28}}>
-            {["Docs","Pricing","Changelog"].map(l=><a key={l} href="#" style={{fontSize:12,...S.muted,textDecoration:"none"}}>{l}</a>)}
+            {[{l:"Docs",href:"/docs"},{l:"Pricing",href:"/#pricing"},{l:"Changelog",href:"https://github.com/Artkill24/projectblock"}].map(n=><a key={n.l} href={n.href} style={{fontSize:12,...S.muted,textDecoration:"none"}}>{n.l}</a>)}
           </div>
           <button style={{fontSize:12,fontWeight:700,background:"#00e5cc",color:"#000",border:"none",cursor:"pointer",padding:"8px 18px",letterSpacing:"0.05em"}}>GET API KEY →</button>
         </div>
@@ -223,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* PRICING */}
-      <section style={{padding:"0 24px 80px",position:"relative",zIndex:1}}>
+      <section id="pricing" style={{padding:"0 24px 80px",position:"relative",zIndex:1}}>
         <div style={S.wrap}>
           <div style={S.tag}>↳ PRICING</div>
           <h2 style={S.h2}>Pay for what you use.</h2>
@@ -285,7 +285,7 @@ export default function Home() {
           </div>
           <span style={{fontSize:11,...S.muted}}>© 2026 ProjectBlock. Built by one person.</span>
           <div style={{display:"flex",gap:24}}>
-            {["Docs","Status","Privacy","Terms"].map(l=><a key={l} href="#" style={{fontSize:11,...S.muted,textDecoration:"none"}}>{l}</a>)}
+            {[{l:"Docs",href:"/docs"},{l:"Status",href:"/status"},{l:"Privacy",href:"/privacy"},{l:"Terms",href:"/terms"}].map(n=><a key={n.l} href={n.href} style={{fontSize:11,...S.muted,textDecoration:"none"}}>{n.l}</a>)}
           </div>
         </div>
       </footer>
