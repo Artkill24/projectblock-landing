@@ -231,7 +231,7 @@ export default function Home() {
             {[
               {plan:"FREE",price:"€0",events:"500K events/mo",feat:["Budget gating","Audit log (30 days)","Dashboard embed","Community support"],btn:"Start free",link:"#free",featured:false},
               {plan:"STARTER",price:"€19",events:"10M events/mo",feat:["Budget gating","Audit log (1 year)","Budget webhooks","Usage analytics","Email support"],btn:"Get started",link:"https://buy.stripe.com/cNicN42Fr3xB1CI7FGcQU02",featured:true},
-              {plan:"PRO",price:"€49",events:"100M events/mo",feat:["Everything in Starter","Audit log (10 years)","EU AI Act reports","API access","Priority support"],btn:"Get started",link:"https://buy.stripe.com/4gM0017Zlc470yEaRScQU03",featured:false},
+              {plan:"PRO",price:"€49",events:"100M events/mo",feat:["Everything in Starter","Audit log (10 years)","EU AI Act reports","API access","Priority support"],btn:"Get started",link:"https://buy.stripe.com/4gM00i7ZLc470yEaRScQU03",featured:false},
               {plan:"BUSINESS",price:"€199",events:"Unlimited",feat:["Everything in Pro","White-label dashboard","Custom retention","SSO / SAML","SLA + dedicated"],btn:"Contact us",link:"https://buy.stripe.com/9B6eVc3Jvd8b2GM5xycQU04",featured:false},
             ].map(p=>(
               <div key={p.plan} style={{background:p.featured?"#0d0d12":"#060608",padding:"36px 28px",borderTop:p.featured?"2px solid #00e5cc":"2px solid transparent"}}>
