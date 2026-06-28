@@ -65,6 +65,11 @@ export default function Privacy() {
           <li style={S.li}><strong style={{color:"#e8e8f0"}}>Fly.io</strong> — application hosting</li>
         </ul>
         <p style={S.p}>We do not sell your data, and we do not share it with advertisers.</p>
+        <p style={S.p}>
+          Some processors handle data outside the EU (for example, application compute on Fly.io may run
+          in the US). Where this happens, we rely on Standard Contractual Clauses or equivalent safeguards
+          maintained by each processor to keep your data protected to EU standards.
+        </p>
 
         <h2 style={S.h2}>4. Your rights</h2>
         <p style={S.p}>Under GDPR, you can ask us to:</p>
