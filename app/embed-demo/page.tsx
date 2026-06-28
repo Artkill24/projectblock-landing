@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 export default function EmbedDemo() {
   return (
     <main style={{minHeight:"100vh",background:"#060608",color:"#e8e8f0",fontFamily:"monospace",padding:"60px 24px"}}>
@@ -16,14 +18,15 @@ export default function EmbedDemo() {
         data-key="pb_pub_your_publishable_key"
         data-user="usr_123"></script>`}</pre>
         </div>
-
-        <script
-          src="/widget.js"
-          data-key="pb_pub_4bf1952584af45d9a8666bcf57af9c55"
-          data-user="usr_test"
-          data-target="pb-usage"
-        ></script>
       </div>
+
+      <Script
+        src="/widget.js"
+        data-key="pb_pub_4bf1952584af45d9a8666bcf57af9c55"
+        data-user="usr_test"
+        data-target="pb-usage"
+        strategy="afterInteractive"
+      />
     </main>
   );
 }
