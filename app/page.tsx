@@ -93,13 +93,13 @@ export default function Home() {
             <button style={{fontSize:13,background:"transparent",...S.muted,cursor:"pointer",padding:"14px 28px",border:"1px solid rgba(255,255,255,0.07)",fontFamily:"monospace"}}>VIEW DOCS</button>
           </div>
 
-          {/* LIVE COUNTERS */}
+          {/* SPECS */}
           <div style={{display:"inline-flex",alignItems:"center",gap:0,border:"1px solid rgba(255,255,255,0.07)",background:"#0d0d12",flexWrap:"wrap" as const}}>
             {[
-              {val: mounted ? events.toLocaleString("en") : INIT_EVENTS.toLocaleString("en"), label:"events metered"},
-              {val: mounted ? `$${saved.toLocaleString("en")}` : `$${INIT_SAVED.toLocaleString("en")}`, label:"saved via cache"},
-              {val:"99.99%", label:"uptime sla"},
-              {val:"<2ms", label:"p99 latency"},
+              {val:"<2ms", label:"gate check latency (p99)"},
+              {val:"10yr", label:"max audit retention"},
+              {val:"500K+", label:"free tier events/mo"},
+              {val:"0", label:"lines to start metering"},
             ].map((c,i)=>(
               <div key={i} style={{textAlign:"center",padding:"20px 32px",borderRight: i<3 ? "1px solid rgba(255,255,255,0.07)" : "none"}}>
                 <div style={{fontSize:28,fontWeight:700,color:"#00e5cc"}}>{c.val}</div>
