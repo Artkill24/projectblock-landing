@@ -52,7 +52,10 @@ export default function Docs() {
 
         <h2 style={S.h2}>Install</h2>
         <pre style={{background:"#0d0d12",border:"1px solid rgba(255,255,255,0.07)",padding:"16px 20px",
-          fontSize:13,marginBottom:16}}>pip install projectblock</pre>
+          fontSize:13,marginBottom:8}}>pip install projectblock</pre>
+        <p style={{fontSize:12,color:"rgba(232,232,240,0.45)",marginBottom:16}}>
+          Using LangChain? <code style={S.teal}>pip install projectblock[langchain]</code> adds a drop-in callback handler — see below.
+        </p>
 
         <h2 style={S.h2}>Authentication</h2>
         <p style={S.p}>
@@ -140,6 +143,29 @@ await record("user_123", model="gpt-4o", cost_usd=0.0023)`}
 
 → {"ok":true,"pseudonym":"deleted_a0053e6d...","events_anonymized":4}`}
         />
+
+        <h2 style={S.h2}>LangChain integration</h2>
+        <p style={S.p}>
+          Drop <code style={S.teal}>ProjectBlockCallbackHandler</code> into any LangChain{" "}
+          <code style={S.teal}>callbacks=[...]</code> list to get automatic budget gating, usage
+          metering, and audit logging for every LLM call — no other changes to your chain.
+        </p>
+        <pre style={{background:"#0d0d12",border:"1px solid rgba(255,255,255,0.07)",padding:"16px 20px",
+          fontSize:12.5,lineHeight:1.8,overflowX:"auto",marginBottom:24}}>
+{`from langchain_openai import ChatOpenAI
+from projectblock.langchain import ProjectBlockCallbackHandler
+
+handler = ProjectBlockCallbackHandler(
+    user_id="usr_123",
+    budget_usd=5.00,
+    cost_per_1k_input=0.0025,   # set to your model's real pricing
+    cost_per_1k_output=0.01,
+)
+
+llm = ChatOpenAI(model="gpt-4o", callbacks=[handler])
+response = await llm.ainvoke("Hello!")
+# Budget checked before the call. Usage + audit event recorded after.`}
+        </pre>
 
         <h2 style={S.h2}>Need more?</h2>
         <p style={S.p}>
