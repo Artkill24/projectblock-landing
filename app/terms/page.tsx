@@ -77,7 +77,7 @@ export default function Terms() {
           at any time, with immediate effect on future billing, via the{" "}
           <strong style={{color:"#e8e8f0"}}>Manage Billing</strong> button in your{" "}
           <a href="/dashboard" style={S.teal}>dashboard</a>, or by emailing{" "}
-          <a href="mailto:robertkiller23@gmail.com" style={S.teal}>robertkiller23@gmail.com</a>.
+          <a href="mailto:support@project-block.com" style={S.teal}>support@project-block.com</a>.
         </p>
 
         <h2 style={S.h2}>5. Acceptable use</h2>
@@ -138,7 +138,7 @@ export default function Terms() {
 
         <h2 style={S.h2}>13. Contact</h2>
         <p style={S.p}>
-          <a href="mailto:robertkiller23@gmail.com" style={S.teal}>robertkiller23@gmail.com</a>
+          <a href="mailto:support@project-block.com" style={S.teal}>support@project-block.com</a>
         </p>
       </div>
 

@@ -86,7 +86,7 @@ export default function Privacy() {
         </ul>
         <p style={S.p}>
           To exercise these rights for your own account data, email{" "}
-          <a href="mailto:robertkiller23@gmail.com" style={S.teal}>robertkiller23@gmail.com</a>.
+          <a href="mailto:support@project-block.com" style={S.teal}>support@project-block.com</a>.
           You also have the right to lodge a complaint with the Italian Garante per la protezione dei
           dati personali.
         </p>
@@ -112,7 +112,7 @@ export default function Privacy() {
 
         <h2 style={S.h2}>8. Contact</h2>
         <p style={S.p}>
-          Questions about this policy: <a href="mailto:robertkiller23@gmail.com" style={S.teal}>robertkiller23@gmail.com</a>
+          Questions about this policy: <a href="mailto:support@project-block.com" style={S.teal}>support@project-block.com</a>
         </p>
       </div>
 
