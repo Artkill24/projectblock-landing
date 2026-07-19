@@ -11,13 +11,8 @@ function randomLog() {
   return { ts, user: USERS[~~(Math.random()*USERS.length)], action: ACTS[~~(Math.random()*ACTS.length)], model: MODELS[~~(Math.random()*MODELS.length)], cost: `$${(Math.random()*0.04+0.001).toFixed(4)}`, status: Math.random()>0.15?"ok":"warn", id: Math.random() };
 }
 
-const INIT_EVENTS = 487_234_109;
-const INIT_SAVED  = 18_430;
-
 export default function Home() {
   const [mounted, setMounted] = useState(false);
-  const [events, setEvents]   = useState(INIT_EVENTS);
-  const [saved,  setSaved]    = useState(INIT_SAVED);
   const [logs,   setLogs]     = useState<ReturnType<typeof randomLog>[]>([]);
   const [email,  setEmail]    = useState("");
   const [done,   setDone]     = useState(false);
@@ -25,10 +20,8 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
     setLogs(Array.from({length:7}, randomLog));
-    const t1 = setInterval(() => setEvents(e => e + ~~(Math.random()*80+20)), 800);
-    const t2 = setInterval(() => setSaved(s => s + ~~(Math.random()*5+1)), 3000);
-    const t3 = setInterval(() => setLogs(p => [{...randomLog()}, ...p.slice(0,8)]), 1800);
-    return () => [t1,t2,t3].forEach(clearInterval);
+    const t = setInterval(() => setLogs(p => [{...randomLog()}, ...p.slice(0,8)]), 1800);
+    return () => clearInterval(t);
   }, []);
 
   const S = {
@@ -60,7 +53,7 @@ export default function Home() {
           <div style={{display:"flex",gap:28}}>
             {[{l:"Docs",href:"/docs"},{l:"Pricing",href:"/#pricing"},{l:"Changelog",href:"https://github.com/Artkill24/projectblock"}].map(n=><a key={n.l} href={n.href} style={{fontSize:12,...S.muted,textDecoration:"none"}}>{n.l}</a>)}
           </div>
-          <button style={{fontSize:12,fontWeight:700,background:"#00e5cc",color:"#000",border:"none",cursor:"pointer",padding:"8px 18px",letterSpacing:"0.05em"}}>GET API KEY →</button>
+          <a href="mailto:support@project-block.com?subject=ProjectBlock%20API%20key%20request" style={{fontSize:12,fontWeight:700,background:"#00e5cc",color:"#000",cursor:"pointer",padding:"8px 18px",letterSpacing:"0.05em",textDecoration:"none",fontFamily:"monospace"}}>GET API KEY →</a>
         </div>
       </nav>
 
@@ -69,37 +62,28 @@ export default function Home() {
         <div style={S.wrap}>
           <div style={{display:"inline-flex",alignItems:"center",gap:8,border:"1px solid rgba(255,255,255,0.07)",padding:"6px 14px",fontSize:11,...S.muted,marginBottom:32,letterSpacing:"0.08em"}}>
             <span style={{width:6,height:6,borderRadius:"50%",background:"#00e5cc",display:"inline-block",animation:"pulse 2s infinite"}}/>
-            INFRASTRUCTURE FOR AI PRODUCTS · EARLY ACCESS
+            PER-USER COST CONTROL FOR LLM APPS · EARLY ACCESS
           </div>
           <h1 style={{fontSize:"clamp(40px,7vw,76px)",fontWeight:800,lineHeight:1.0,letterSpacing:"-0.04em",marginBottom:24}}>
-            <span style={{color:"#00e5cc"}}>Meter. Audit.</span><br/>
-            <span style={{color:"rgba(232,232,240,0.3)"}}>Ship with confidence.</span>
+            <span style={{color:"#00e5cc"}}>Your LLM bill</span><br/>
+            <span style={{color:"rgba(232,232,240,0.3)"}}>stops where you say.</span>
           </h1>
           <p style={{fontSize:15,...S.muted,maxWidth:520,margin:"0 auto 40px",lineHeight:1.7}}>
-            The missing infrastructure layer between your app and your LLM.<br/>
-            Usage metering + EU AI Act–ready audit trails in one SDK.
+            Per-user budget caps enforced before the call fires — not discovered on the invoice.<br/>
+            Three lines of Python. Audit trail and compliance report included.
           </p>
           <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap" as const,marginBottom:60}}>
-            {done ? (
-              <div style={{fontSize:13,color:"#00e5cc",padding:"14px 28px",border:"1px solid #00e5cc"}}>✓ You&apos;re on the list. We&apos;ll be in touch.</div>
-            ) : <>
-              <input placeholder="your@email.com" value={email} onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==="Enter"&&email.includes("@")&&setDone(true)}
-                style={{fontSize:13,background:"#0d0d12",border:"1px solid rgba(255,255,255,0.07)",color:"#e8e8f0",padding:"14px 20px",outline:"none",width:240,fontFamily:"monospace"}}/>
-              <button onClick={()=>email.includes("@")&&setDone(true)}
-                style={{fontSize:13,fontWeight:700,background:"#00e5cc",color:"#000",border:"none",cursor:"pointer",padding:"14px 28px",letterSpacing:"0.05em"}}>
-                JOIN WAITLIST →
-              </button>
-            </>}
-            <button style={{fontSize:13,background:"transparent",...S.muted,cursor:"pointer",padding:"14px 28px",border:"1px solid rgba(255,255,255,0.07)",fontFamily:"monospace"}}>VIEW DOCS</button>
+            <a href="mailto:support@project-block.com?subject=ProjectBlock%20API%20key%20request" style={{fontSize:13,fontWeight:700,background:"#00e5cc",color:"#000",cursor:"pointer",padding:"14px 28px",letterSpacing:"0.05em",textDecoration:"none",fontFamily:"monospace"}}>REQUEST API KEY →</a>
+            <a href="/docs" style={{fontSize:13,background:"transparent",...S.muted,cursor:"pointer",padding:"14px 28px",border:"1px solid rgba(255,255,255,0.07)",fontFamily:"monospace",textDecoration:"none"}}>VIEW DOCS</a>
           </div>
 
           {/* SPECS */}
           <div style={{display:"inline-flex",alignItems:"center",gap:0,border:"1px solid rgba(255,255,255,0.07)",background:"#0d0d12",flexWrap:"wrap" as const}}>
             {[
-              {val:"<2ms", label:"gate check latency (p99)"},
-              {val:"10yr", label:"max audit retention"},
-              {val:"500K+", label:"free tier events/mo"},
-              {val:"0", label:"lines to start metering"},
+              {val:"3", label:"lines to integrate"},
+              {val:"€19", label:"starting price / month"},
+              {val:"HMAC", label:"signed budget webhooks"},
+              {val:"MIT", label:"open-source SDK"},
             ].map((c,i)=>(
               <div key={i} style={{textAlign:"center",padding:"20px 32px",borderRight: i<3 ? "1px solid rgba(255,255,255,0.07)" : "none"}}>
                 <div style={{fontSize:28,fontWeight:700,color:"#00e5cc"}}>{c.val}</div>
@@ -133,13 +117,13 @@ export default function Home() {
       {/* AUDIT LIVE */}
       <section style={{padding:"0 24px 80px",position:"relative",zIndex:1}}>
         <div style={S.wrap}>
-          <div style={S.tag}>↳ LIVE DEMO</div>
+          <div style={S.tag}>↳ WHAT THE AUDIT LOG LOOKS LIKE</div>
           <h2 style={S.h2}>Every event. Captured.</h2>
           <div style={{border:"1px solid rgba(255,255,255,0.07)",background:"#0d0d12"}}>
             <div style={{padding:"14px 20px",borderBottom:"1px solid rgba(255,255,255,0.07)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <span style={{fontSize:11,...S.muted,letterSpacing:"0.1em",textTransform:"uppercase" as const}}>AUDIT STREAM · api.project-block.com</span>
+              <span style={{fontSize:11,...S.muted,letterSpacing:"0.1em",textTransform:"uppercase" as const}}>AUDIT STREAM · SAMPLE OUTPUT</span>
               <span style={{fontSize:10,color:"#00e5cc",display:"flex",alignItems:"center",gap:6}}>
-                <span style={{width:6,height:6,borderRadius:"50%",background:"#00e5cc",display:"inline-block",animation:"pulse 2s infinite"}}/>LIVE
+                <span style={{width:6,height:6,borderRadius:"50%",background:"#00e5cc",display:"inline-block",animation:"pulse 2s infinite"}}/>SAMPLE
               </span>
             </div>
             <div style={{display:"grid",gridTemplateColumns:"110px 100px 1fr 80px 70px",padding:"8px 20px",fontSize:10,...S.muted,letterSpacing:"0.08em",textTransform:"uppercase" as const,background:"#12121a",borderBottom:"1px solid rgba(255,255,255,0.05)"}}>
@@ -164,7 +148,7 @@ export default function Home() {
       <section style={{padding:"0 24px 80px",position:"relative",zIndex:1}}>
         <div style={S.wrap}>
           <div style={{display:"flex",border:"1px solid rgba(255,255,255,0.07)",background:"#0d0d12",flexWrap:"wrap" as const}}>
-            {[{v:"<2ms",l:"Gate check latency (p99)"},{v:"10yr",l:"Audit log retention"},{v:"∞",l:"Events per second (burst)"},{v:"27",l:"EU member states covered"}].map((m,i)=>(
+            {[{v:"3",l:"Lines of code to integrate"},{v:"80/95/100%",l:"Budget alert thresholds"},{v:"Art. 12",l:"EU AI Act audit report"},{v:"MIT",l:"Open-source Python SDK"}].map((m,i)=>(
               <div key={i} style={{flex:1,minWidth:160,padding:"28px 24px",textAlign:"center",borderRight:i<3?"1px solid rgba(255,255,255,0.07)":"none"}}>
                 <div style={{fontSize:32,fontWeight:700,color:"#00e5cc"}}>{m.v}</div>
                 <div style={{fontSize:11,...S.muted,marginTop:4}}>{m.l}</div>
@@ -182,11 +166,11 @@ export default function Home() {
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:1,background:"rgba(255,255,255,0.07)"}}>
             {[
               {icon:"⚡",t:"Usage Metering",d:"Track tokens, cost, requests per user with atomic counters. Never let free-tier users drain your budget.",tag:"meter.*"},
-              {icon:"🛡️",t:"Budget Gate",d:"Pre-call check in <2ms. Block requests before they hit your LLM. Zero latency added to your users.",tag:"gate.allowed()"},
-              {icon:"📋",t:"Audit Trail",d:"Immutable log of every AI action. Input hash, output hash, model, cost, human approval. 10-year retention.",tag:"audit.log()"},
+              {icon:"🛡️",t:"Budget Gate",d:"Budget checked before the request reaches your LLM. Over budget, no call fires, no cost incurred.",tag:"gate.allowed()"},
+              {icon:"📋",t:"Audit Trail",d:"Append-only log of every AI action: input hash, output hash, model, cost, approval status.",tag:"audit.log()"},
               {icon:"🇪🇺",t:"EU AI Act Ready",d:"Auto-generated compliance reports. GDPR + audit retention solved architecturally — not as afterthought.",tag:"compliance.*"},
-              {icon:"📊",t:"Embeddable Dashboard",d:"One line of code adds a usage dashboard inside your app. Users see their own consumption in real-time.",tag:"<UsageDash />"},
-              {icon:"🔔",t:"Budget Alerts",d:"Webhooks at 80%, 95%, 100% budget. Slack, email, SMS. Configurable per user, per plan, per model.",tag:"webhooks.*"},
+              {icon:"📊",t:"Embeddable Widget",d:"A script tag drops a usage panel inside your app. Your users see their own consumption.",tag:"widget.js"},
+              {icon:"🔔",t:"Budget Alerts",d:"HMAC-signed webhooks at 80%, 95% and 100% of budget. Point them at Slack, your backend, anything.",tag:"webhooks.*"},
             ].map(f=>(
               <div key={f.t} style={{background:"#060608",padding:"36px 32px"}}>
                 <div style={{fontSize:28,marginBottom:20}}>{f.icon}</div>
@@ -205,10 +189,10 @@ export default function Home() {
           <div style={S.tag}>↳ INTEGRATION</div>
           <h2 style={S.h2}>Live in one afternoon.</h2>
           {[
-            {n:"01",t:"Install the SDK",d:"Python, Node.js, Go. One package.",code:"pip install projectblock"},
+            {n:"01",t:"Install the SDK",d:"Python 3.9+. LangChain callback handler included.",code:"pip install projectblock"},
             {n:"02",t:"Gate every AI call",d:"Check budget before your LLM call. If over budget, throws — no call made, no cost incurred.",code:'await gate("usr_123", budget_usd=5.00)'},
             {n:"03",t:"Record + Audit",d:"After the call, record consumption and log the event. Two lines. Both async.",code:'await record(user_id, tokens=usage.total, cost=0.0023)'},
-            {n:"04",t:"Export compliance",d:"One API call generates EU AI Act compliance PDF for any time range.",code:'compliance.report(format="eu-ai-act", period="2026-Q2")'},
+            {n:"04",t:"Export compliance",d:"One API call generates EU AI Act compliance PDF for any time range.",code:'curl api.project-block.com/compliance/report -H "X-API-Key: pb_..."'},
           ].map(s=>(
             <div key={s.n} style={{display:"grid",gridTemplateColumns:"80px 1fr",gap:32,padding:"40px 0",borderBottom:"1px solid rgba(255,255,255,0.07)"}}>
               <div style={{fontSize:48,fontWeight:700,color:"rgba(255,255,255,0.07)",lineHeight:1}}>{s.n}</div>
@@ -229,10 +213,10 @@ export default function Home() {
           <h2 style={S.h2}>Pay for what you use.</h2>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:1,background:"rgba(255,255,255,0.07)"}}>
             {[
-              {plan:"FREE",price:"€0",events:"500K events/mo",feat:["Budget gating","Audit log (30 days)","Dashboard embed","Community support"],btn:"Start free",link:"#free",featured:false},
+              {plan:"FREE",price:"€0",events:"500K events/mo",feat:["Budget gating","Audit log (30 days)","Dashboard embed","Community support"],btn:"Request access",link:"mailto:support@project-block.com?subject=Free%20tier%20access",featured:false},
               {plan:"STARTER",price:"€19",events:"10M events/mo",feat:["Budget gating","Audit log (1 year)","Budget webhooks","Usage analytics","Email support"],btn:"Get started",link:"https://buy.stripe.com/cNicN42Fr3xB1CI7FGcQU02",featured:true},
               {plan:"PRO",price:"€49",events:"100M events/mo",feat:["Everything in Starter","Audit log (10 years)","EU AI Act reports","API access","Priority support"],btn:"Get started",link:"https://buy.stripe.com/4gM00i7ZLc470yEaRScQU03",featured:false},
-              {plan:"BUSINESS",price:"€199",events:"Unlimited",feat:["Everything in Pro","White-label dashboard","Custom retention","SSO / SAML","SLA + dedicated"],btn:"Contact us",link:"https://buy.stripe.com/9B6eVc3Jvd8b2GM5xycQU04",featured:false},
+              {plan:"BUSINESS",price:"€199",events:"High volume",feat:["Everything in Pro","White-label dashboard","Custom retention","Priority support"],btn:"Talk to us",link:"mailto:support@project-block.com",featured:false},
             ].map(p=>(
               <div key={p.plan} style={{background:p.featured?"#0d0d12":"#060608",padding:"36px 28px",borderTop:p.featured?"2px solid #00e5cc":"2px solid transparent"}}>
                 <div style={{fontSize:11,letterSpacing:"0.15em",textTransform:"uppercase" as const,...S.muted,marginBottom:16}}>{p.plan}</div>
