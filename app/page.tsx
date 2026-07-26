@@ -52,7 +52,7 @@ export default function Home() {
           <div style={{display:"flex",gap:28}}>
             {[{l:"Docs",href:"/docs"},{l:"Pricing",href:"/#pricing"},{l:"Changelog",href:"https://github.com/Artkill24/projectblock"}].map(n=><a key={n.l} href={n.href} style={{fontSize:12,...S.muted,textDecoration:"none"}}>{n.l}</a>)}
           </div>
-          <a href="mailto:support@project-block.com?subject=ProjectBlock%20API%20key%20request" style={{fontSize:12,fontWeight:700,background:"#00e5cc",color:"#000",cursor:"pointer",padding:"8px 18px",letterSpacing:"0.05em",textDecoration:"none",fontFamily:"monospace"}}>GET API KEY →</a>
+          <a href="/dashboard" style={{fontSize:12,fontWeight:700,background:"#00e5cc",color:"#000",cursor:"pointer",padding:"8px 18px",letterSpacing:"0.05em",textDecoration:"none",fontFamily:"monospace"}}>GET API KEY →</a>
         </div>
       </nav>
 
@@ -72,7 +72,7 @@ export default function Home() {
             Three lines of Python. Audit trail and compliance report included.
           </p>
           <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap" as const,marginBottom:60}}>
-            <a href="mailto:support@project-block.com?subject=ProjectBlock%20API%20key%20request" style={{fontSize:13,fontWeight:700,background:"#00e5cc",color:"#000",cursor:"pointer",padding:"14px 28px",letterSpacing:"0.05em",textDecoration:"none",fontFamily:"monospace"}}>REQUEST API KEY →</a>
+            <a href="/dashboard" style={{fontSize:13,fontWeight:700,background:"#00e5cc",color:"#000",cursor:"pointer",padding:"14px 28px",letterSpacing:"0.05em",textDecoration:"none",fontFamily:"monospace"}}>REQUEST API KEY →</a>
             <a href="/docs" style={{fontSize:13,background:"transparent",...S.muted,cursor:"pointer",padding:"14px 28px",border:"1px solid rgba(255,255,255,0.07)",fontFamily:"monospace",textDecoration:"none"}}>VIEW DOCS</a>
           </div>
 
@@ -212,7 +212,7 @@ export default function Home() {
           <h2 style={S.h2}>Pay for what you use.</h2>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:1,background:"rgba(255,255,255,0.07)"}}>
             {[
-              {plan:"FREE",price:"€0",events:"500K events/mo",feat:["Budget gating","Audit log (30 days)","Dashboard embed","Community support"],btn:"Request access",link:"mailto:support@project-block.com?subject=Free%20tier%20access",featured:false},
+              {plan:"FREE",price:"€0",events:"500K events/mo",feat:["Budget gating","Audit log (30 days)","Dashboard embed","Community support"],btn:"Start free",link:"/dashboard",featured:false},
               {plan:"STARTER",price:"€19",events:"10M events/mo",feat:["Budget gating","Audit log (1 year)","Budget webhooks","Usage analytics","Email support"],btn:"Get started",link:"https://buy.stripe.com/cNicN42Fr3xB1CI7FGcQU02",featured:true},
               {plan:"PRO",price:"€49",events:"100M events/mo",feat:["Everything in Starter","Audit log (10 years)","EU AI Act reports","API access","Priority support"],btn:"Get started",link:"https://buy.stripe.com/4gM00i7ZLc470yEaRScQU03",featured:false},
               {plan:"BUSINESS",price:"€199",events:"High volume",feat:["Everything in Pro","White-label dashboard","Custom retention","Priority support"],btn:"Talk to us",link:"mailto:support@project-block.com",featured:false},
@@ -245,14 +245,14 @@ export default function Home() {
             First 100 founders get Pro free for 6 months.
           </p>
           {done ? (
-            <div style={{fontSize:14,color:"#00e5cc",border:"1px solid #00e5cc",display:"inline-block",padding:"16px 32px"}}>✓ You&apos;re on the list.</div>
+            <div style={{fontSize:14,color:"#00e5cc",border:"1px solid #00e5cc",display:"inline-block",padding:"16px 32px"}}>✓ Check your inbox for your login link.</div>
           ) : (
             <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap" as const}}>
               <input placeholder="your@email.com" value={email} onChange={e=>setEmail(e.target.value)}
                 style={{fontSize:13,background:"#0d0d12",border:"1px solid rgba(255,255,255,0.07)",color:"#e8e8f0",padding:"14px 20px",outline:"none",width:260,fontFamily:"monospace"}}/>
-              <button onClick={()=>email.includes("@")&&setDone(true)}
+              <button onClick={async()=>{if(!email.includes("@"))return;try{const r=await fetch("https://api.project-block.com/v1/auth/request-link",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email})});if(!r.ok)throw new Error();setDone(true);}catch{alert("Something went wrong — email support@project-block.com and I'll set you up.");}}}
                 style={{fontSize:13,fontWeight:700,background:"#00e5cc",color:"#000",border:"none",cursor:"pointer",padding:"14px 28px",letterSpacing:"0.05em",fontFamily:"monospace"}}>
-                JOIN WAITLIST →
+                START FREE →
               </button>
             </div>
           )}

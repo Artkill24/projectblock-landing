@@ -24,11 +24,13 @@ export const metadata: Metadata = {
     siteName: "ProjectBlock",
     type: "website",
     locale: "en_US",
+    images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "ProjectBlock — Meter. Audit. Ship with confidence.",
     description: "The missing infrastructure layer between your app and your LLM. EU AI Act–ready audit trails in 3 lines of code.",
+    images: ["/og.png"],
   },
   robots: {
     index: true,
