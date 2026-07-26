@@ -1,3 +1,4 @@
+import { LogoMark } from "@/components/Logo";
 const S = {
   bg: {minHeight:"100vh",background:"#060608",color:"#e8e8f0",fontFamily:"monospace"},
   wrap: {maxWidth:760,margin:"0 auto",padding:"0 24px"},
@@ -7,8 +8,6 @@ const S = {
   h2: {fontSize:18,fontWeight:700,letterSpacing:"-0.02em",marginTop:36,marginBottom:12,color:"#e8e8f0"},
   p: {fontSize:13,lineHeight:1.8,color:"rgba(232,232,240,0.65)",marginBottom:12},
   li: {fontSize:13,lineHeight:1.8,color:"rgba(232,232,240,0.65)",marginBottom:6},
-  logoBox: {width:24,height:24,border:"1.5px solid #00e5cc",position:"relative" as const,display:"grid",placeItems:"center"},
-  logoFill: {position:"absolute" as const,inset:3,background:"#00e5cc",clipPath:"polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)"},
 };
 
 export default function Terms() {
@@ -17,7 +16,7 @@ export default function Terms() {
       <nav style={{borderBottom:"1px solid rgba(255,255,255,0.07)",background:"rgba(6,6,8,0.9)",backdropFilter:"blur(20px)",position:"sticky",top:0,zIndex:100}}>
         <div style={{maxWidth:900,margin:"0 auto",padding:"0 24px",height:56,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           <a href="/" style={{display:"flex",alignItems:"center",gap:10,textDecoration:"none",color:"#e8e8f0",fontSize:14,fontWeight:700}}>
-            <div style={S.logoBox}><div style={S.logoFill}/></div>
+            <LogoMark size={24} />
             project<span style={S.teal}>block</span>
           </a>
           <span style={{fontSize:11,color:"rgba(232,232,240,0.45)"}}>TERMS OF SERVICE</span>

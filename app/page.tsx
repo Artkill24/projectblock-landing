@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { LogoMark } from "@/components/Logo";
 
 const MODELS = ["gpt-4o","claude-sonnet-4-6","gemini-2.0-flash","llama-3.3-70b"];
 const USERS  = ["usr_a4f2","usr_b9k1","usr_c3m8","usr_d7p5"];
@@ -28,8 +29,6 @@ export default function Home() {
     nav: {position:"sticky" as const,top:0,zIndex:100,borderBottom:"1px solid rgba(255,255,255,0.07)",background:"rgba(6,6,8,0.9)",backdropFilter:"blur(20px)"},
     navInner: {maxWidth:1100,margin:"0 auto",padding:"0 24px",height:60,display:"flex",alignItems:"center",justifyContent:"space-between"},
     logo: {display:"flex",alignItems:"center",gap:10,fontSize:15,fontWeight:700,letterSpacing:"-0.02em"},
-    logoBox: {width:28,height:28,border:"1.5px solid #00e5cc",display:"grid",placeItems:"center",position:"relative" as const},
-    logoFill: {position:"absolute" as const,inset:3,background:"#00e5cc",clipPath:"polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)"},
     wrap: {maxWidth:1100,margin:"0 auto",padding:"0 24px"},
     tag: {fontSize:11,letterSpacing:"0.15em",color:"#00e5cc",textTransform:"uppercase" as const,marginBottom:16},
     h2: {fontSize:"clamp(28px,4vw,44px)",fontWeight:800,letterSpacing:"-0.03em",marginBottom:48},
@@ -47,7 +46,7 @@ export default function Home() {
       <nav style={S.nav}>
         <div style={S.navInner}>
           <div style={S.logo}>
-            <div style={S.logoBox}><div style={S.logoFill}/></div>
+            <LogoMark size={28} />
             project<span style={{color:"#00e5cc"}}>block</span>
           </div>
           <div style={{display:"flex",gap:28}}>
@@ -264,7 +263,7 @@ export default function Home() {
       <footer style={{borderTop:"1px solid rgba(255,255,255,0.07)",padding:"40px 24px",position:"relative",zIndex:1}}>
         <div style={{...S.wrap,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap" as const,gap:16}}>
           <div style={S.logo}>
-            <div style={S.logoBox}><div style={S.logoFill}/></div>
+            <LogoMark size={28} />
             project<span style={{color:"#00e5cc"}}>block</span>
           </div>
           <span style={{fontSize:11,...S.muted}}>© 2026 ProjectBlock. Built by one person.</span>

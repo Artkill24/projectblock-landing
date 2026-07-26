@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="ProjectBlock">
+  <defs>
+    <linearGradient id="tealC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2DD4BF"/>
+      <stop offset="100%" stop-color="#0D9488"/>
+    </linearGradient>
+    <linearGradient id="goldC" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E0AE3C"/>
+      <stop offset="55%" stop-color="#D9A22B"/>
+      <stop offset="100%" stop-color="#B8861F"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="107" y="24" width="22" height="28" rx="6" fill="#0D9488" opacity="0.22"/>
+
+  <rect x="14" y="58" width="132" height="9" rx="4.5" fill="url(#goldC)"/>
+
+  <rect x="31"  y="108" width="22" height="30" rx="6" fill="url(#tealC)"/>
+  <rect x="69"  y="90"  width="22" height="48" rx="6" fill="url(#tealC)"/>
+  <rect x="107" y="72"  width="22" height="66" rx="6" fill="url(#tealC)"/>
+
+  <rect x="14" y="143" width="132" height="5" rx="2.5" fill="#0B1220" opacity="0.15"/>
+</svg>
