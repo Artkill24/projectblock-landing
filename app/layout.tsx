@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   description: "The missing infrastructure layer between your app and your LLM. Usage metering + EU AI Act–ready audit trails in one SDK. pip install projectblock.",
   keywords: "AI metering, audit trail, EU AI Act, LLM infrastructure, API gateway, AI compliance, usage tracking, budget gate, GDPR",
   authors: [{ name: "Saad Kaicar" }],
+  icons: {
+    icon: "/favicon-32.png",
+    apple: "/apple-touch-icon-180.png",
+  },
   openGraph: {
     title: "ProjectBlock — Meter. Audit. Ship with confidence.",
     description: "The missing infrastructure layer between your app and your LLM. EU AI Act–ready audit trails in 3 lines of code.",
